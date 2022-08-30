@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Webgriffe_Multiwarehouse>
-            <version>0.1.4</version>
+            <version>0.1.5</version>
         </Webgriffe_Multiwarehouse>
     </modules>
     <global>
@@ -84,5 +84,12 @@
                 </observers>
             </sales_model_service_quote_submit_success>
         </events>
+        <layout>
+            <updates>
+                <webgriffe_multiwarehouse>
+                    <file>webgriffe_multiwarehouse.xml</file>
+                </webgriffe_multiwarehouse>
+            </updates>
+        </layout>
     </frontend>
 </config>
