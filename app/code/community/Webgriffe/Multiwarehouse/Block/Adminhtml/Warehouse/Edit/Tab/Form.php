@@ -42,6 +42,21 @@ class Webgriffe_Multiwarehouse_Block_Adminhtml_Warehouse_Edit_Tab_Form
                 'required' => true,
             ));
 
+        $fieldsetBasic->addField('frontend_label', 'text', array(
+                'name' => 'frontend_label',
+                'label' => $this->__('Frontend label'),
+            ));
+
+        $fieldsetBasic->addField('frontend_list_label_css', 'text', array(
+                'name' => 'frontend_list_label_css',
+                'label' => $this->__('Frontend list label css'),
+            ));
+
+        $fieldsetBasic->addField('frontend_description', 'text', array(
+                'name' => 'frontend_description',
+                'label' => $this->__('Frontend description'),
+            ));
+
         if (Mage::getSingleton('adminhtml/session')->getWarehouseData())
         {
             $form->setValues(Mage::getSingleton('adminhtml/session')->getWarehouseData());

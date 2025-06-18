@@ -1,3 +1,11 @@
+Update 1.0.2
+Label usage example:
+<?php echo $this->getlayout()->createBlock('wgmulti/catalog_product_warehouse')
+    ->setProduct($_product)
+    ->setTemplate('webgriffe/multiwarehouse/label.phtml')
+    ->toHtml();
+?>
+
 Webgriffe_Multiwarehouse
 ========================
 This Magento module was developed as proof of concept during the Mageday::2014 Workshop.
