@@ -65,9 +65,9 @@ class Webgriffe_Multiwarehouse_Block_Catalog_Product_Warehouse extends Mage_Core
             $data[$warehouse->getId()] = [
                 'id' => $warehouse->getId(),
                 'name' => $warehouse->getName(),
-                'frontend_label' => $warehouse->getFrontendLabel(),
-                'frontend_list_label_css' => $warehouse->getFrontendListLabelCss(),
-                'frontend_description' => $warehouse->getFrontendDescription()
+                'frontend_label' => $warehouse->getFrontendLabel() ?? $warehouse->getName(),
+                'frontend_list_label_css' => $warehouse->getFrontendListLabelCss() ?? '',
+                'frontend_description' => $warehouse->getFrontendDescription() ?? ''
             ];
         }
 
