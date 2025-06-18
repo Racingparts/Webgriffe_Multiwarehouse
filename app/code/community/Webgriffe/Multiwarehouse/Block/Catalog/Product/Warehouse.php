@@ -13,12 +13,12 @@ class Webgriffe_Multiwarehouse_Block_Catalog_Product_Warehouse extends Mage_Core
             $label_css = $is_salable ? 'background-color:yellow' : 'background-color:grey;color:white';
 
             $warehouse = [
-                'frontend_label' => $label,
+                'frontend_list_label' => $label,
                 'frontend_list_label_css' => $label_css
             ];
         }
 
-        $label = $warehouse['frontend_label'];
+        $label = $warehouse['frontend_list_label'];
         $label_css = $warehouse['frontend_list_label_css'];
 
         $html = "<span style='position:absolute;z-index:3;padding:7px;border-radius:8px;font-weight:bold;$label_css'>";
@@ -66,6 +66,8 @@ class Webgriffe_Multiwarehouse_Block_Catalog_Product_Warehouse extends Mage_Core
                 'id' => $warehouse->getId(),
                 'name' => $warehouse->getName(),
                 'frontend_label' => $warehouse->getFrontendLabel() ?? $warehouse->getName(),
+                'frontend_label_css' => $warehouse->getFrontendLabelCss() ?? '',
+                'frontend_list_label' => $warehouse->getFrontendListLabel() ?? $warehouse->getName(),
                 'frontend_list_label_css' => $warehouse->getFrontendListLabelCss() ?? '',
                 'frontend_description' => $warehouse->getFrontendDescription() ?? ''
             ];

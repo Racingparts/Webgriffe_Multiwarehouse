@@ -47,6 +47,16 @@ class Webgriffe_Multiwarehouse_Block_Adminhtml_Warehouse_Edit_Tab_Form
                 'label' => $this->__('Frontend label'),
             ));
 
+        $fieldsetBasic->addField('frontend_label_css', 'text', array(
+                'name' => 'frontend_label_css',
+                'label' => $this->__('Frontend label css'),
+            ));
+
+        $fieldsetBasic->addField('frontend_list_label', 'text', array(
+                'name' => 'frontend_list_label',
+                'label' => $this->__('Frontend list label'),
+            ));
+
         $fieldsetBasic->addField('frontend_list_label_css', 'text', array(
                 'name' => 'frontend_list_label_css',
                 'label' => $this->__('Frontend list label css'),

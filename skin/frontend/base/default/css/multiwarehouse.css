@@ -1,0 +1,29 @@
+.stock-info {
+    float: left;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 15px;
+    border: 1px solid lightgrey;
+    padding: 10px;
+}
+.product-view .product-shop .stock-info .availability {
+    font-weight: bold;
+    margin:0;
+}
+.warehouse {
+    float: left;
+    width: 100%;
+    margin-bottom: 5px;
+}
+.warehouse.out-of-stock{
+    display:none
+}
+.warehouse p {
+    float:left;
+    margin:0 5px 0 0
+}
+.warehouse .description {
+    color:darkgrey;
+    font-size:12px;
+    clear:both
+}

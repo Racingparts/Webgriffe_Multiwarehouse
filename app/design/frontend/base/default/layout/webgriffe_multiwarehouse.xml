@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<PRODUCT_TYPE_simple>
+		<reference name="head">
+			<action method="addItem"><type>skin_css</type><name>css/multiwarehouse.css</name></action>
+		</reference>		
+		<reference name="product.info.simple">
+			<action method="setTemplate">
+				<template>webgriffe/multiwarehouse/availability/default.phtml</template>
+			</action>
+		</reference>
+	</PRODUCT_TYPE_simple>
+</layout> 

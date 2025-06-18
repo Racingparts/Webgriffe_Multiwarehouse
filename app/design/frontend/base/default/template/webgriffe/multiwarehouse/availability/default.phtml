@@ -1,0 +1,60 @@
+<?php
+$product = $this->getProduct();
+$product_id = $product->getId();
+
+$block =  $this->getlayout()->createBlock('wgmulti/catalog_product_warehouse');
+
+$warehouses = $block->getWarehouses();
+$total_qty = round($product->getStockItem()->getQty());
+?>
+
+<?php if ($this->displayProductStockStatus() && $product->getStockItem()->getManageStock()): ?>
+        <?php if ($product->isAvailable()): ?>
+            <link itemprop="availability" href="https://schema.org/InStock" />
+
+            <?php // for backorder ?>
+            <?php if ($total_qty > 0): ?>
+                <div class="stock-info">
+                    <p class="availability in-stock">
+                        <?php echo $this->helper('catalog')->__('Stock info:') ?>
+                    </p>
+
+                    <?php // when not use multiwarehouse ?>
+                    <?php if (!$block->getFirstAvailableWarehouse($product)): ?>
+                        <div class="warehouse orderable">
+                            <p><?php echo $this->__('Orderable') . ': ' . $total_qty . ' ' . $this->__('pcs'); ?></p>
+                            <div class="clear"></div>
+                        </div>
+                    <?php else: ?>
+                        <?php foreach($warehouses as $warehouse_id => $warehouse): ?>
+                            <?php
+                                $stock_name = $warehouse['frontend_label'];
+                                $stock_qty = $block->getProductWarehouseQty($warehouse_id, $product_id);
+                                $stock_qty = round($stock_qty);
+
+                                $class = $stock_qty < 1 ? 'out-of-stock' : 'orderable';
+                            ?>
+
+                            <div class="warehouse <?php echo $class ?>">
+                                <p style="<?php echo $warehouse['frontend_label_css'] ?>"><?php echo $stock_name . ': ' . $stock_qty . ' ' . $this->__('pcs'); ?></p>
+                                <p class="description"><?php echo $warehouse['frontend_description'] ?></p>
+                                <div class="clear"></div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        <?php else: ?>
+            <div class="stock-info">
+                <link itemprop="availability" href="https://schema.org/OutOfStock" />
+                <p class="availability out-of-stock">
+                    <?php echo $this->__('Out of stock') ?>
+                </p>
+            </div>
+        <?php endif; ?>
+<?php else: ?>
+    <link itemprop="availability" href="https://schema.org/InStock" />
+<?php endif; ?>
+
+<?php echo $this->getChildHtml('product_type_data_extra') ?>
+<?php echo $this->getPriceHtml($product) ?>

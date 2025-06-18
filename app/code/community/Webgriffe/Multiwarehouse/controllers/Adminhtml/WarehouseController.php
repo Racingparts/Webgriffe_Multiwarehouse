@@ -88,7 +88,9 @@ class Webgriffe_Multiwarehouse_Adminhtml_WarehouseController
                 $item->setIsSaving(true) // needed to avoid getting the associated object id
                     ->setId($this->getRequest()->getParam('id'));
 
-                foreach (array('code','name','position', 'frontend_label', 'frontend_list_label_css', 'frontend_description') as $field)
+                $fields = ['code', 'name', 'position', 'frontend_label', 'frontend_label_css', 'frontend_list_label', 'frontend_list_label_css', 'frontend_description'];
+
+                foreach ($fields as $field)
                 {
                     $item->setData($field, $data[$field]);
                 }
