@@ -3,11 +3,21 @@
     <menu>
         <catalog>
             <children>
-                <wgwgmulti_warehouses translate="title">
-                    <title>Manage Warehouses</title>
+
+                <webgriffe_muliwarehouse translate="title">
+                    <title>Multiwarehouse</title>
                     <sort_order>100</sort_order>
-                    <action>wgmulti/adminhtml_warehouse/index</action>
-                </wgwgmulti_warehouses>
+                    <children>
+                        <warehouse translate="title">
+                            <title>Warehouses</title>
+                            <action>wgmulti/adminhtml_warehouse/index</action>
+                        </warehouse>
+                        <stock translate="title">
+                            <title>Stock</title>
+                            <action>wgmulti/adminhtml_multiwarehouse_stock/index</action>
+                        </stock>
+                    </children>
+                </webgriffe_muliwarehouse>
             </children>
         </catalog>
     </menu>
@@ -17,10 +27,18 @@
                 <children>
                     <catalog>
                         <children>
-                            <wgmulti_warehouses translate="title" module="wgmulti">
-                                <title>Manage Warehouses</title>
+                            <webgriffe_muliwarehouse translate="title" module="wgmulti">
+                                <title>Multiwarehouse</title>
                                 <sort_order>100</sort_order>
-                            </wgmulti_warehouses>
+                                <children>
+                                    <warehouse translate="title" module="wgmulti">
+                                        <title>Warehouses</title>
+                                    </warehouse>
+                                    <stock translate="title" module="wgmulti">
+                                        <title>Stock</title>
+                                    </stock>
+                                </children>
+                            </webgriffe_muliwarehouse>
                         </children>
                     </catalog>
                 </children>
