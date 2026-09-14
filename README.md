@@ -6,6 +6,21 @@ Label usage example:
     ->toHtml();
 ?>
 
+When rendering a product collection, pass the loaded collection to the shared
+label block. Warehouse quantities are then loaded in one query for the whole
+collection instead of one query per product and warehouse:
+
+<?php
+$warehouseLabelBlock = $this->getLayout()
+    ->createBlock('wgmulti/catalog_product_warehouse')
+    ->setProductCollection($_productCollection)
+    ->setTemplate('webgriffe/multiwarehouse/label.phtml');
+
+foreach ($_productCollection as $_product) {
+    echo $warehouseLabelBlock->setProduct($_product)->toHtml();
+}
+?>
+
 Webgriffe_Multiwarehouse
 ========================
 This Magento module was developed as proof of concept during the Mageday::2014 Workshop.

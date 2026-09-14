@@ -2,6 +2,10 @@
 
 class Webgriffe_Multiwarehouse_Block_Catalog_Product_Warehouse extends Mage_Core_Block_Template
 {
+    protected static $_warehouses;
+
+    protected static $_productQuantities = [];
+
     public function getListLabelHtml(Mage_Catalog_Model_Product $product): string
     {
         $warehouse = $this->getFirstAvailableWarehouse($product);
@@ -46,16 +50,17 @@ class Webgriffe_Multiwarehouse_Block_Catalog_Product_Warehouse extends Mage_Core
 
     public function getProductWarehouseQty(int $warehouse_id, int $product_id)
     {
-        $item = Mage::getModel('wgmulti/warehouse_product')->getCollection()
-            ->addFieldToFilter('warehouse_id', $warehouse_id)
-            ->addFieldToFilter('product_id', $product_id)
-            ->getFirstItem();
+        $this->loadProductQuantities($product_id);
 
-        return $item ? $item->getQty() : 0;
+        return self::$_productQuantities[$product_id][$warehouse_id] ?? 0;
     }
 
     public function getWarehouses(): array
     {
+        if (self::$_warehouses !== null) {
+            return self::$_warehouses;
+        }
+
         $data = [];
 
         $collection = Mage::getModel('wgmulti/warehouse')->getCollection();
@@ -73,6 +78,38 @@ class Webgriffe_Multiwarehouse_Block_Catalog_Product_Warehouse extends Mage_Core
             ];
         }
 
-        return $data;
+        self::$_warehouses = $data;
+
+        return self::$_warehouses;
+    }
+
+    protected function loadProductQuantities(int $fallbackProductId): void
+    {
+        if (array_key_exists($fallbackProductId, self::$_productQuantities)) {
+            return;
+        }
+
+        $productIds = [$fallbackProductId];
+        $productCollection = $this->getProductCollection();
+        if ($productCollection instanceof Varien_Data_Collection && $productCollection->isLoaded()) {
+            $productIds = array_merge($productIds, $productCollection->getColumnValues('entity_id'));
+        }
+
+        $productIds = array_values(array_unique(array_filter(array_map('intval', $productIds))));
+        $productIds = array_values(array_diff($productIds, array_keys(self::$_productQuantities)));
+        if (!$productIds) {
+            return;
+        }
+
+        foreach ($productIds as $productId) {
+            self::$_productQuantities[$productId] = [];
+        }
+
+        $collection = Mage::getResourceModel('wgmulti/warehouse_product_collection')
+            ->addFieldToFilter('product_id', ['in' => $productIds]);
+
+        foreach ($collection as $item) {
+            self::$_productQuantities[(int) $item->getProductId()][(int) $item->getWarehouseId()] = $item->getQty();
+        }
     }
 }
