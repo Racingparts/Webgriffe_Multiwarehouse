@@ -129,7 +129,7 @@ class Webgriffe_Multiwarehouse_Adminhtml_WarehouseController
         $this->_redirect('*/*/');
     }
 
-    protected function _isAllowed()
+    protected function _isAllowed(): bool
     {
         return Mage::getSingleton('admin/session')->isAllowed('catalog/wgmulti_warehouses');
     }
