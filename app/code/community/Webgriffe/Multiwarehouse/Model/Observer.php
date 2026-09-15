@@ -18,8 +18,17 @@ class Webgriffe_Multiwarehouse_Model_Observer
 
         $post = Mage::app()->getRequest()->getPost();
 
+        if (!array_key_exists('wgmulti_original_use_multiple_qty', $post)
+            && !array_key_exists('wgmulti_use_multiple_qty', $post)
+            && !array_key_exists('wgmultiqty', $post)) {
+            return;
+        }
+
+        $originalUseMultipleQty = !empty($post['wgmulti_original_use_multiple_qty']);
+        $useMultipleQty = !empty($post['wgmulti_use_multiple_qty']);
+
         // if multiple quantity was disabled
-        if ($post['wgmulti_original_use_multiple_qty'] == 1 && $post['wgmulti_use_multiple_qty'] == 0)
+        if ($originalUseMultipleQty && !$useMultipleQty)
         {
             Mage::getModel('wgmulti/warehouse_product')
                 ->getCollection()
@@ -28,7 +37,7 @@ class Webgriffe_Multiwarehouse_Model_Observer
         }
 
         // if multiple quantity was enabled
-        if ($post['wgmulti_use_multiple_qty'] == 1)
+        if ($useMultipleQty && isset($post['wgmultiqty']) && is_array($post['wgmultiqty']))
         {
             $totalQty = 0.0;
             foreach ($post['wgmultiqty'] as $warehouseId => $qty)
