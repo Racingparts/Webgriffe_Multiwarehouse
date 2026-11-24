@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Webgriffe_Multiwarehouse>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
         </Webgriffe_Multiwarehouse>
     </modules>
     <global>
@@ -37,6 +37,7 @@
             <wgmulti_setup>
                 <setup>
                     <module>Webgriffe_Multiwarehouse</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
                 </setup>
             </wgmulti_setup>
         </resources>
@@ -53,7 +54,17 @@
         </routers>
     </admin>
     <adminhtml>
+        <translate><modules><Webgriffe_Multiwarehouse><files><default>Webgriffe_Multiwarehouse.csv</default></files></Webgriffe_Multiwarehouse></modules></translate>
         <events>
+            <adminhtml_block_widget_tabs_html_before>
+                <observers>
+                    <webgriffe_multiwarehouse_delivery_fields>
+                        <type>singleton</type>
+                        <class>wgmulti/adminhtml_observer</class>
+                        <method>moveDeliveryFieldsToInventory</method>
+                    </webgriffe_multiwarehouse_delivery_fields>
+                </observers>
+            </adminhtml_block_widget_tabs_html_before>
             <catalog_product_save_after>
                 <observers>
                     <webgriffe_multiwarehouse>
@@ -73,6 +84,8 @@
         </layout>
     </adminhtml>
     <frontend>
+        <translate><modules><Webgriffe_Multiwarehouse><files><default>Webgriffe_Multiwarehouse.csv</default></files></Webgriffe_Multiwarehouse></modules></translate>
+        <routers><wgmulti><use>standard</use><args><module>Webgriffe_Multiwarehouse</module><frontName>wgmulti</frontName></args></wgmulti></routers>
         <events>
             <sales_model_service_quote_submit_success>
                 <observers>
@@ -92,4 +105,5 @@
             </updates>
         </layout>
     </frontend>
+    <default><catalog><wgmulti_delivery><enabled>0</enabled><cutoff></cutoff><excluded_dates></excluded_dates></wgmulti_delivery></catalog></default>
 </config>

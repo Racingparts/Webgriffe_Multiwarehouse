@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config><sections><cataloginventory><groups>
+    <wgmulti_delivery translate="label" module="wgmulti">
+        <label>Multiwarehouse Delivery Estimate</label><sort_order>650</sort_order>
+        <show_in_default>1</show_in_default><show_in_website>1</show_in_website><show_in_store>1</show_in_store>
+        <fields>
+            <enabled translate="label" module="wgmulti"><label>Enable Delivery Estimate</label><config_path>catalog/wgmulti_delivery/enabled</config_path><frontend_type>select</frontend_type><source_model>adminhtml/system_config_source_yesno</source_model><sort_order>10</sort_order><show_in_default>1</show_in_default><show_in_website>1</show_in_website><show_in_store>1</show_in_store></enabled>
+            <cutoff translate="label comment" module="wgmulti"><label>Daily Cutoff</label><config_path>catalog/wgmulti_delivery/cutoff</config_path><comment>Optional HH:MM in the store timezone. At or after this time, counting starts on the next business day.</comment><frontend_type>text</frontend_type><backend_model>wgmulti/system_config_backend_calendar</backend_model><sort_order>20</sort_order><show_in_default>1</show_in_default><show_in_website>1</show_in_website><show_in_store>1</show_in_store></cutoff>
+            <excluded_dates translate="label comment" module="wgmulti"><label>Excluded Dates</label><config_path>catalog/wgmulti_delivery/excluded_dates</config_path><comment>YYYY-MM-DD dates, one per line. Saturdays and Sundays are already excluded. Maintain holidays here.</comment><frontend_type>textarea</frontend_type><backend_model>wgmulti/system_config_backend_calendar</backend_model><sort_order>30</sort_order><show_in_default>1</show_in_default><show_in_website>1</show_in_website><show_in_store>1</show_in_store></excluded_dates>
+        </fields>
+    </wgmulti_delivery>
+</groups></cataloginventory></sections></config>

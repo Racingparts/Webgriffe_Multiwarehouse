@@ -10,6 +10,15 @@ class Webgriffe_Multiwarehouse_Model_Warehouse extends Mage_Core_Model_Abstract
 
     protected function _beforeSave()
     {
+        $calendar = Mage::getModel('wgmulti/delivery_calendar');
+        if (!$calendar->validateInterval($this->getDeliveryDaysMin(), $this->getDeliveryDaysMax())) {
+            Mage::throwException(Mage::helper('wgmulti')->__('Enter both delivery limits as whole numbers from 0 to 365, with minimum not greater than maximum.'));
+        }
+        foreach (array('delivery_days_min', 'delivery_days_max') as $field) {
+            if ($this->getData($field) === '') {
+                $this->setData($field, null);
+            }
+        }
         $this->setUpdatedAt(Mage::getSingleton('core/date')->gmtDate());
         if ($this->isObjectNew() && null === $this->getCreatedAt()) {
             $this->setCreatedAt(Mage::getSingleton('core/date')->gmtDate());

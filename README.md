@@ -1,3 +1,96 @@
+Delivery estimates (1.0.7)
+==========================
+
+Warehouse edit forms now accept optional `delivery_days_min` and
+`delivery_days_max` (whole business days, 0-365). Set both or neither; minimum
+must not exceed maximum. These are the TOTAL time until customer delivery,
+including supplier lead time and transit, not just the supplier dispatch time.
+No existing warehouse lead times are populated automatically.
+
+The same optional product attributes appear in the admin product editor's
+**Inventory > Delivery estimate** section for simple products in all attribute
+sets, with store-view inheritance. The native attribute form is moved from its
+dedicated tab without changing attribute assignments or stored values. If an
+administrator adds unrelated visible attributes to that attribute group, its
+original tab is preserved instead of moving unrelated fields. They apply
+only when the product has NO Multiwarehouse rows. Existing rows with zero or
+insufficient quantity, or missing warehouse intervals, never fall back to a
+product interval. Core stock availability still applies. Backorders alone do
+not create a delivery promise.
+
+Allocation follows warehouse `position`, then ID. If several warehouses are
+needed for the requested quantity, use the slowest minimum and maximum among
+the allocated warehouses (the complete quantity must arrive). The feature does
+not change stock deduction, checkout, order splitting or warehouse priority.
+Configurable products require a valid, complete selection and use the selected
+simple child's data. Unselected/invalid variants and unsupported product types
+(bundle, grouped, virtual, downloadable) do not receive an invented date.
+
+Enable under **System > Configuration > Catalog > Inventory > Multiwarehouse Delivery
+Estimate** at the narrowest needed store scope. It defaults to OFF.
+The fields retain their `catalog/wgmulti_delivery/*` storage paths so moving
+the admin group does not discard existing scoped settings.
+The optional daily cutoff uses the store timezone. Saturday/Sunday and explicitly configured
+`YYYY-MM-DD` exclusions are skipped; there is no built-in national holiday or
+special working-Saturday feed. Maintain exclusions for the delivery territory.
+The starting day is the current business day, or the next business day after
+cutoff/on a non-business day. Zero days means that starting day; positive days
+are counted after it. The default UI disclaimer identifies domestic home
+delivery and notes that advance payment can shift the estimate.
+
+The product-page block is added to `product.info.extrahint`. A read-only POST
+to `wgmulti/delivery/estimate` returns current dates with private/no-store
+headers and an Amasty FPC exclusion. The cacheable HTML contains only product
+ID, store URL and an empty placeholder, never dates, quantities or session IDs.
+Quantity and configurable changes refresh the estimate, including theme
+controls that do not emit native events. Stale in-flight responses are ignored.
+Visible open tabs refresh at cutoff/midnight or within five minutes. An unknown
+estimate or request failure hides the block. The calculation is a quote, not a
+guaranteed delivery date. LMS styling is owned by `lms/design`: its layout moves
+the block to the first child position under `product.info.addtocart`, directly
+below the cart button and ahead of payment calculators. Its compact template
+omits the optional disclaimer; the JS supports templates without that element.
+Its slot reserves compact space while a fresh estimate is loading, including
+quantity/variant changes. Unavailable estimates and request failures collapse
+the slot; a subsequent successful estimate restores it. The reserved HTML
+contains no cached date or customer data.
+
+Deployment: back up the database, deploy the package and matching theme, clean
+config/layout/translate caches, then apply only this module's pending setup:
+
+```bash
+php8.3 public/shell/multiwarehouse-delivery.php --install
+```
+
+The installer validates the two warehouse columns and product attributes and
+does not enable the feature or fill any intervals. Clean config/layout/translate
+caches again, set reviewed lead times and calendar, and enable for the desired
+store. No full reindex or full cache flush is required. Existing FPC pages may
+need targeted product-tag invalidation to obtain the new placeholder/assets;
+the live estimate itself is never stored in FPC. The modman map includes all
+new JS/template/translation/CLI files.
+
+Checks (run from the project root):
+
+```bash
+php8.3 vendor/webgriffe/multiwarehouse/tests/delivery.php
+php8.3 vendor/webgriffe/multiwarehouse/tests/delivery-integration.php
+php8.3 vendor/webgriffe/multiwarehouse/tests/delivery-admin.php
+```
+
+The admin rendering test checks native Inventory integration, locked fields,
+store inheritance, unchanged values and non-duplicated form fields without
+database writes. Its temporary HTML fixture is `/tmp/wgmulti-delivery-admin-fields.html`.
+The integration test is dev-host restricted and rolls back its data. For actual
+browser checks, create marked dev fixtures, run the two-context desktop/mobile
+test, then ALWAYS remove the fixtures, including after a browser-test failure:
+
+```bash
+php8.3 vendor/webgriffe/multiwarehouse/tests/delivery-integration.php --prepare-browser
+node vendor/webgriffe/multiwarehouse/tests/delivery-browser.mjs
+php8.3 vendor/webgriffe/multiwarehouse/tests/delivery-integration.php --cleanup-browser
+```
+
 Update 1.0.2
 Label usage example:
 <?php echo $this->getlayout()->createBlock('wgmulti/catalog_product_warehouse')

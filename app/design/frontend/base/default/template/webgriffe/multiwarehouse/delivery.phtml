@@ -1,0 +1,8 @@
+<?php $product = $this->getProduct(); ?>
+<div class="wgmulti-delivery" data-wgmulti-delivery
+     data-product="<?php echo (int)$product->getId() ?>"
+     data-url="<?php echo $this->escapeUrl($this->getEstimateUrl()) ?>" hidden aria-live="polite" aria-atomic="true">
+    <strong class="wgmulti-delivery__label"></strong>
+    <span class="wgmulti-delivery__detail"></span>
+    <small class="wgmulti-delivery__notice"><?php echo $this->escapeHtml($this->__('Estimated for domestic home delivery. Advance payment may affect the dates.')) ?></small>
+</div>

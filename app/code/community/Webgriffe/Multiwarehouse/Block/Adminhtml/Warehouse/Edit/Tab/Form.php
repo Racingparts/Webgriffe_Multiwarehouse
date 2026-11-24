@@ -67,6 +67,15 @@ class Webgriffe_Multiwarehouse_Block_Adminhtml_Warehouse_Edit_Tab_Form
                 'label' => $this->__('Frontend description'),
             ));
 
+        $delivery = $form->addFieldset('wgmulti_delivery', array('legend' => $this->__('Delivery estimate')));
+        foreach (array('min' => 'Minimum delivery time (business days)', 'max' => 'Maximum delivery time (business days)') as $bound => $label) {
+            $delivery->addField('delivery_days_' . $bound, 'text', array(
+                'name' => 'delivery_days_' . $bound, 'label' => $this->__($label),
+                'class' => 'validate-digits', 'required' => false,
+                'note' => $this->__('Optional pair, 0-365 business days. Total time until delivery to the customer.'),
+            ));
+        }
+
         if (Mage::getSingleton('adminhtml/session')->getWarehouseData())
         {
             $form->setValues(Mage::getSingleton('adminhtml/session')->getWarehouseData());
